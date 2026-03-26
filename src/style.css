@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #app {
+    margin: 0;
+    min-height: 100%;
+  }
+
+  body {
+    min-height: 100vh;
+    background: theme('colors.bg');
+    color: theme('colors.txt');
+    font-family: theme('fontFamily.mono');
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  button,
+  input,
+  select {
+    font: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  /* Chart bar — dynamic height via inline style, can't do pure utility */
+  .chart-bar {
+    @apply w-full min-h-[24px] bg-accent;
+  }
+
+  /* Toggle track + thumb need precise positioning */
+  .toggle-track {
+    @apply relative w-10 h-[22px] rounded-full bg-line transition-colors duration-200;
+  }
+  .toggle-track--on {
+    @apply bg-accent;
+  }
+  .toggle-thumb {
+    @apply absolute top-[3px] left-[3px] w-4 h-4 rounded-full bg-bg transition-[left] duration-200;
+  }
+  .toggle-track--on .toggle-thumb {
+    @apply left-[21px];
+  }
+
+  /* Funnel bar */
+  .funnel-bar-track {
+    @apply h-1.5 bg-line-soft mb-1;
+  }
+  .funnel-bar-fill {
+    @apply h-full bg-accent transition-[width] duration-500;
+  }
+}
