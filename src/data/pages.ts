@@ -30,9 +30,16 @@ export type Report = {
   status: 'ready' | 'generating' | 'scheduled'
 }
 
+export type SettingItem = {
+  label: string
+  value: string
+  type: 'text' | 'toggle' | 'select'
+  options?: string[]
+}
+
 export type SettingSection = {
   title: string
-  items: { label: string; value: string; type: 'text' | 'toggle' | 'select' }[]
+  items: SettingItem[]
 }
 
 export const trafficSources: TrafficSource[] = [
@@ -232,7 +239,7 @@ export const settingSections: SettingSection[] = [
       { label: 'DISPLAY_NAME', value: 'M. Reynolds', type: 'text' },
       { label: 'EMAIL', value: 'reynolds@acme.co', type: 'text' },
       { label: 'ROLE', value: 'ADMIN::L3', type: 'text' },
-      { label: 'TIMEZONE', value: 'UTC-5 (EST)', type: 'select' },
+      { label: 'TIMEZONE', value: 'UTC-5 (EST)', type: 'select', options: ['UTC-8 (PST)', 'UTC-5 (EST)', 'UTC+0 (GMT)', 'UTC+1 (CET)', 'UTC+8 (CST)', 'UTC+9 (JST)'] },
     ],
   },
   {
@@ -247,9 +254,9 @@ export const settingSections: SettingSection[] = [
   {
     title: 'SYSTEM',
     items: [
-      { label: 'THEME', value: 'DARK', type: 'select' },
-      { label: 'LANGUAGE', value: 'EN-US', type: 'select' },
-      { label: 'DATA_RETENTION', value: '90 DAYS', type: 'select' },
+      { label: 'THEME', value: 'DARK', type: 'select', options: ['DARK', 'LIGHT', 'SYSTEM'] },
+      { label: 'LANGUAGE', value: 'EN-US', type: 'select', options: ['EN-US', 'ZH-CN', 'JA-JP', 'DE-DE', 'FR-FR'] },
+      { label: 'DATA_RETENTION', value: '90 DAYS', type: 'select', options: ['30 DAYS', '60 DAYS', '90 DAYS', '180 DAYS', '365 DAYS'] },
       { label: 'AUTO_REFRESH', value: 'ON', type: 'toggle' },
     ],
   },

@@ -78,19 +78,20 @@ const navigate = (item: string) => {
       </div>
 
       <!-- System status -->
-      <dl class="flex flex-col gap-3 -mx-5 px-5 py-5 border border-line bg-panel border-l-0">
-        <dt class="text-[10px] tracking-wide font-semibold text-accent">// SYSTEM STATUS</dt>
-        <dd class="flex flex-col gap-2.5 m-0">
+      <div class="-mx-5 px-5 py-5 border border-line bg-panel border-l-0">
+        <div class="text-[10px] tracking-wide font-semibold text-accent mb-3">// SYSTEM STATUS</div>
+        <dl class="flex flex-col gap-2.5 m-0">
           <div
             v-for="([label, value], i) in props.systemStats"
             :key="label"
             class="flex items-center justify-between pb-2 text-muted text-[11px]"
+            :class="{ 'border-b border-line-soft': i < props.systemStats.length - 1 }"
           >
-            <span>{{ label }}</span>
-            <strong :class="i === 0 ? 'text-accent' : 'text-txt'" class="text-[11px]">{{ value }}</strong>
+            <dt>{{ label }}</dt>
+            <dd :class="i === 0 ? 'text-accent' : 'text-txt'" class="m-0 text-[11px] font-bold">{{ value }}</dd>
           </div>
-        </dd>
-      </dl>
+        </dl>
+      </div>
 
       <!-- Navigation -->
       <nav class="flex flex-col gap-0.5" aria-label="Dashboard navigation">

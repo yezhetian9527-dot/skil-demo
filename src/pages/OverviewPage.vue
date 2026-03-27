@@ -11,7 +11,7 @@ import { activities, analyticsRows, metrics, products, revenue } from '../data/d
 </script>
 
 <template>
-  <DashboardHeader />
+  <DashboardHeader title="OVERVIEW" />
 
   <section class="flex flex-wrap gap-2 mb-8" aria-label="Filters">
     <ActionChip label="FILTER" icon="sliders" />

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Key, Save } from 'lucide-vue-next'
 import { ref } from 'vue'
+import Breadcrumb from '../components/Breadcrumb.vue'
 import { apiKeys, settingSections } from '../data/pages'
 
 const toggles = ref<Record<string, boolean>>(
@@ -13,15 +14,7 @@ const toggles = ref<Record<string, boolean>>(
 <template>
   <header class="flex flex-col gap-6 mb-8">
     <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-      <nav aria-label="Breadcrumb">
-        <ol class="flex items-center gap-2 list-none m-0 p-0">
-          <li class="text-[10px] text-muted">SYS</li>
-          <li class="text-[10px] text-[#2a2a2a]" aria-hidden="true">&gt;</li>
-          <li class="text-[10px] text-muted">DASH</li>
-          <li class="text-[10px] text-[#2a2a2a]" aria-hidden="true">&gt;</li>
-          <li class="text-[10px] text-accent font-semibold" aria-current="page">SETTINGS</li>
-        </ol>
-      </nav>
+      <Breadcrumb current="SETTINGS" />
     </div>
     <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
       <div>
@@ -78,9 +71,10 @@ const toggles = ref<Record<string, boolean>>(
           <select
             v-else-if="item.type === 'select'"
             :id="`setting-${item.label}`"
-            class="text-[11px] text-txt py-1.5 px-2.5 border border-line bg-panel-2 cursor-pointer appearance-none"
+            class="text-[11px] text-txt py-1.5 px-2.5 border border-line bg-panel-2 cursor-pointer"
+            :value="item.value"
           >
-            <option>{{ item.value }}</option>
+            <option v-for="opt in (item.options ?? [item.value])" :key="opt" :value="opt">{{ opt }}</option>
           </select>
           <input
             v-else

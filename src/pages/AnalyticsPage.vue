@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Download, TrendingDown, TrendingUp } from 'lucide-vue-next'
 import ActionChip from '../components/ActionChip.vue'
+import Breadcrumb from '../components/Breadcrumb.vue'
+import MetricCard from '../components/MetricCard.vue'
 import { analyticsMetrics, conversionFunnel, trafficSources, weeklyTraffic } from '../data/pages'
 
 const maxTraffic = Math.max(...weeklyTraffic.map((t) => t.value))
@@ -10,15 +12,7 @@ const maxTraffic = Math.max(...weeklyTraffic.map((t) => t.value))
   <!-- Header -->
   <header class="flex flex-col gap-6 mb-8">
     <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-      <nav aria-label="Breadcrumb">
-        <ol class="flex items-center gap-2 list-none m-0 p-0">
-          <li class="text-[10px] text-muted">SYS</li>
-          <li class="text-[10px] text-[#2a2a2a]" aria-hidden="true">&gt;</li>
-          <li class="text-[10px] text-muted">DASH</li>
-          <li class="text-[10px] text-[#2a2a2a]" aria-hidden="true">&gt;</li>
-          <li class="text-[10px] text-accent font-semibold" aria-current="page">ANALYTICS</li>
-        </ol>
-      </nav>
+      <Breadcrumb current="ANALYTICS" />
     </div>
     <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
       <div>
@@ -52,29 +46,7 @@ const maxTraffic = Math.max(...weeklyTraffic.map((t) => t.value))
 
   <!-- Metrics -->
   <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-8" aria-label="Analytics metrics">
-    <article
-      v-for="m in analyticsMetrics"
-      :key="m.label"
-      class="p-5 max-md:p-4 border border-line bg-panel"
-      :aria-label="m.label"
-    >
-      <div class="flex items-center justify-between">
-        <span class="text-[10px] tracking-wide font-semibold text-muted">{{ m.label }}</span>
-      </div>
-      <output class="block mt-[18px] text-[32px] max-md:text-2xl leading-none font-display">{{ m.value }}</output>
-      <div
-        class="flex items-center gap-1.5 mt-4 text-[10px] font-semibold"
-        :class="m.trend === 'up' ? 'text-accent' : 'text-danger'"
-      >
-        <component
-          :is="m.trend === 'up' ? TrendingUp : TrendingDown"
-          :size="10"
-          :stroke-width="1.75"
-          aria-hidden="true"
-        />
-        <span>{{ m.change }}</span>
-      </div>
-    </article>
+    <MetricCard v-for="m in analyticsMetrics" :key="m.label" :metric="m" />
   </section>
 
   <!-- Weekly traffic chart -->

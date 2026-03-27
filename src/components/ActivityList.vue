@@ -58,21 +58,5 @@ const itemIcon = (index: number) => ITEM_ICONS[index] ?? CreditCard
       </li>
     </ol>
 
-    <nav class="flex justify-center mt-6 mb-9" aria-label="Pagination">
-      <div class="flex items-center gap-1">
-        <button
-          class="w-9 h-9 flex items-center justify-center border border-accent bg-accent text-bg leading-none"
-          aria-current="page"
-        >
-          1
-        </button>
-        <button class="w-9 h-9 flex items-center justify-center border border-line bg-panel text-muted leading-none">
-          2
-        </button>
-        <button class="w-9 h-9 flex items-center justify-center border border-line bg-panel text-muted leading-none">
-          3
-        </button>
-      </div>
-    </nav>
   </section>
 </template>

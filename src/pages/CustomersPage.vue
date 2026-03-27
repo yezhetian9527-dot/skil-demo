@@ -1,35 +1,30 @@
 <script setup lang="ts">
-import { Download, Plus, Search, TrendingDown, TrendingUp } from 'lucide-vue-next'
-import { ref } from 'vue'
+import { Download, Plus, Search } from 'lucide-vue-next'
+import { computed, ref } from 'vue'
+import Breadcrumb from '../components/Breadcrumb.vue'
+import MetricCard from '../components/MetricCard.vue'
 import { customerMetrics, customers } from '../data/pages'
 
 const search = ref('')
-const filtered = ref(customers)
-
-const planColors: Record<string, string> = {
-  enterprise: 'var(--tw-accent, #00ff88)',
-  pro: 'var(--tw-warn, #ff8800)',
-  free: 'var(--tw-muted, #6a6a6a)',
-}
+const filtered = computed(() => {
+  const q = search.value.trim().toLowerCase()
+  if (!q) return customers
+  return customers.filter(
+    (c) => c.name.toLowerCase().includes(q) || c.id.toLowerCase().includes(q) || c.email.toLowerCase().includes(q),
+  )
+})
 </script>
 
 <template>
   <header class="flex flex-col gap-6 mb-8">
     <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-      <nav aria-label="Breadcrumb">
-        <ol class="flex items-center gap-2 list-none m-0 p-0">
-          <li class="text-[10px] text-muted">SYS</li>
-          <li class="text-[10px] text-[#2a2a2a]" aria-hidden="true">&gt;</li>
-          <li class="text-[10px] text-muted">DASH</li>
-          <li class="text-[10px] text-[#2a2a2a]" aria-hidden="true">&gt;</li>
-          <li class="text-[10px] text-accent font-semibold" aria-current="page">CUSTOMERS</li>
-        </ol>
-      </nav>
+      <Breadcrumb current="CUSTOMERS" />
       <label
         class="inline-flex items-center gap-2.5 min-w-[200px] max-md:w-full border border-line bg-panel px-3.5 py-2.5 text-muted text-[10px] leading-none cursor-text"
       >
         <Search :size="14" :stroke-width="1.75" aria-hidden="true" />
         <input
+          v-model="search"
           type="search"
           placeholder="SEARCH CUSTOMERS..."
           class="border-0 bg-transparent text-txt text-[10px] outline-none w-full min-h-[20px] placeholder:text-muted"
@@ -67,29 +62,7 @@ const planColors: Record<string, string> = {
 
   <!-- Metrics -->
   <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-8" aria-label="Customer metrics">
-    <article
-      v-for="m in customerMetrics"
-      :key="m.label"
-      class="p-5 max-md:p-4 border border-line bg-panel"
-      :aria-label="m.label"
-    >
-      <div class="flex items-center justify-between">
-        <span class="text-[10px] tracking-wide font-semibold text-muted">{{ m.label }}</span>
-      </div>
-      <output class="block mt-[18px] text-[32px] max-md:text-2xl leading-none font-display">{{ m.value }}</output>
-      <div
-        class="flex items-center gap-1.5 mt-4 text-[10px] font-semibold"
-        :class="m.trend === 'up' ? 'text-accent' : 'text-danger'"
-      >
-        <component
-          :is="m.trend === 'up' ? TrendingUp : TrendingDown"
-          :size="10"
-          :stroke-width="1.75"
-          aria-hidden="true"
-        />
-        <span>{{ m.change }}</span>
-      </div>
-    </article>
+    <MetricCard v-for="m in customerMetrics" :key="m.label" :metric="m" />
   </section>
 
   <!-- Customer table -->

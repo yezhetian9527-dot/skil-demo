@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { Clock, Download, FileText, Plus, TrendingDown, TrendingUp } from 'lucide-vue-next'
+import { Clock, Download, FileText, Plus } from 'lucide-vue-next'
+import Breadcrumb from '../components/Breadcrumb.vue'
+import MetricCard from '../components/MetricCard.vue'
 import { reportMetrics, reports } from '../data/pages'
 
-const typeColors: Record<string, string> = {
-  financial: '#00ff88',
-  usage: '#6c8cff',
-  audit: '#ff8800',
-  performance: '#c084fc',
+const typeClasses: Record<string, string> = {
+  financial: 'text-accent',
+  usage: 'text-[#6c8cff]',
+  audit: 'text-warn',
+  performance: 'text-[#c084fc]',
 }
 
 const statusLabels: Record<string, string> = {
@@ -19,15 +21,7 @@ const statusLabels: Record<string, string> = {
 <template>
   <header class="flex flex-col gap-6 mb-8">
     <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-      <nav aria-label="Breadcrumb">
-        <ol class="flex items-center gap-2 list-none m-0 p-0">
-          <li class="text-[10px] text-muted">SYS</li>
-          <li class="text-[10px] text-[#2a2a2a]" aria-hidden="true">&gt;</li>
-          <li class="text-[10px] text-muted">DASH</li>
-          <li class="text-[10px] text-[#2a2a2a]" aria-hidden="true">&gt;</li>
-          <li class="text-[10px] text-accent font-semibold" aria-current="page">REPORTS</li>
-        </ol>
-      </nav>
+      <Breadcrumb current="REPORTS" />
     </div>
     <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
       <div>
@@ -53,29 +47,7 @@ const statusLabels: Record<string, string> = {
 
   <!-- Metrics -->
   <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-8" aria-label="Report metrics">
-    <article
-      v-for="m in reportMetrics"
-      :key="m.label"
-      class="p-5 max-md:p-4 border border-line bg-panel"
-      :aria-label="m.label"
-    >
-      <div class="flex items-center justify-between">
-        <span class="text-[10px] tracking-wide font-semibold text-muted">{{ m.label }}</span>
-      </div>
-      <output class="block mt-[18px] text-[32px] max-md:text-2xl leading-none font-display">{{ m.value }}</output>
-      <div
-        class="flex items-center gap-1.5 mt-4 text-[10px] font-semibold"
-        :class="m.trend === 'up' ? 'text-accent' : 'text-danger'"
-      >
-        <component
-          :is="m.trend === 'up' ? TrendingUp : TrendingDown"
-          :size="10"
-          :stroke-width="1.75"
-          aria-hidden="true"
-        />
-        <span>{{ m.change }}</span>
-      </div>
-    </article>
+    <MetricCard v-for="m in reportMetrics" :key="m.label" :metric="m" />
   </section>
 
   <!-- Report grid -->
@@ -89,7 +61,7 @@ const statusLabels: Record<string, string> = {
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
       <article v-for="r in reports" :key="r.id" class="flex flex-col gap-3 p-5 max-md:p-4 border border-line bg-panel">
         <div class="flex items-center justify-between">
-          <mark class="text-[10px] font-bold bg-transparent" :style="{ color: typeColors[r.type] }">
+          <mark class="text-[10px] font-bold bg-transparent" :class="typeClasses[r.type]">
             [{{ r.type.toUpperCase() }}]
           </mark>
           <span class="text-[10px] tracking-wide text-muted">{{ r.id }}</span>
